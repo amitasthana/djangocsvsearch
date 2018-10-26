@@ -84,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'example.urls'
@@ -158,10 +159,6 @@ USE_TZ = True
 
 
 
-#STATICFILES_DIRS = (
- #   os.path.join(BASE_DIR, 'static'),
-  #  )
-
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
     # Add to this list all the locations containing your static files 
@@ -170,24 +167,22 @@ TEMPLATE_DIRS = (
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
-
-STATIC_ROOT = os.path.join(BASE_DIR, "live-static", "static-root")
-
-#STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-#STATIC_ROOT = "/home/cfedeploy/webapps/cfehome_static_root/"
 
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "live-static", "media-root")
 
 FILES_ROOT = os.path.join(BASE_DIR, 'files/')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 
