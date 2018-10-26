@@ -51,7 +51,9 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/v1/token/', CustomObtainAuthToken.as_view()),
     #url(r'^api/v1/wordsearch/(?P<s>\d+)/$', WordSearch.as_view()),
-    url(r'^search/(?P<s>[\w\-]+)/$',WordSearch.as_view()   )
+    #url(r'^search/(?P<s>[\w\-]+)/$',WordSearch.as_view()   ),
+    #url(r'^wordsearch/(?P<username>\w{0,50})/$', WordSearch,),
+    url(r'^search$',  WordSearch.as_view())
 
 
 
