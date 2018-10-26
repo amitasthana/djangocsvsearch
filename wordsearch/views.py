@@ -9,6 +9,9 @@ from rest_framework import status
 from django.conf import settings
 import csv
 from pprint import pprint
+import difflib
+import re
+
 # Create your views here.
 
 class CustomObtainAuthToken(ObtainAuthToken):
@@ -37,42 +40,22 @@ class WordSearch(APIView):
     lookup_url_kwarg = 's'
 
     def get(self,request,*args,**kwargs):
-        searcedword = self.kwargs['s']
+        searchword = self.kwargs['s']
+        resultdict = {}
+        namelist = []
+        datalist = []
+        with open(settings.FILES_ROOT + 'word_search.tsv') as csvfile:
+            reader = csv.DictReader(csvfile, delimiter='\t')
+            for row in reader:
+                namelist.append( row['name'])
+                datalist.append( ( {'name':row['name'] } , {'frequency' : row['frequency']  }) )
 
-
-        result = {}
-        resultarray = [ ]   
-
-
-        with open(settings.FILES_ROOT + 'word_search.tsv', 'r') as csvfile:
-            csvreader = csv.reader(csvfile, delimiter=',', quotechar='"')
-            for row in csvreader:
-                makedict = { }
-                if row[2] in result:
-                    result[row[2]].append( float(row[1][1:]))
-                    amount = sum(result[row[6]])
-                else:
-                    if row[1] != 'Order Amount':
-                        result[row[2]] = [ float( row[1][1:] )]                 
-    
-
-        dictlist = []   
-
-        objet = { }
-
-        for key, value in result.items():
-            temp = [key, sum(  value) ]     
-            r = lambda: random.randint(0,255)
-            color = '#%02X%02X%02X' % (r(),r(),r())
-            temp_dict = { "color":color, "totalamount":sum ( value) }
-            objet[key] = temp_dict
+        matching = [s for s in namelist if searchword in s]
 
 
 
 
-
-        dictthis = {"searcedword" : searcedword }
-        return Response(dictthis,status.HTTP_200_OK)
+        return Response(matching,status.HTTP_200_OK)
         
 
 
