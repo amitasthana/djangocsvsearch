@@ -1,4 +1,2 @@
 # djangocsvsearch
-
-
 django csv search
